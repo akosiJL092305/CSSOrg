@@ -1,12 +1,19 @@
-using Microsoft.EntityFrameworkCore;
-using OrgAPI.Models;
+// ======================= Data/AppDbContext.cs =======================
+using MySql.Data.MySqlClient;
 
-namespace OrgAPI.Data
+public class AppDbContext
 {
-    public class AppDbContext : DbContext
-    {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
+    private readonly IConfiguration _config;
 
-        public DbSet<User> Users { get; set; }
+    public AppDbContext(IConfiguration config)
+    {
+        _config = config;
+    }
+
+    public MySqlConnection GetConnection()
+    {
+        return new MySqlConnection(
+            _config.GetConnectionString("DefaultConnection")
+        );
     }
 }
